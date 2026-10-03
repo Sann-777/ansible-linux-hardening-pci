@@ -1,4 +1,4 @@
-# 🛡️ Ansible PCI-DSS v4.0 & CIS Linux Hardening Framework
+# Ansible PCI-DSS v4.0 & CIS Linux Hardening Framework
 
 [![Ansible](https://img.shields.io/badge/Ansible-2.14%2B-red.svg?logo=ansible&logoColor=white)](https://www.ansible.com/)
 [![PCI-DSS](https://img.shields.io/badge/PCI--DSS-v4.0_Level_1-brightgreen.svg?logo=shield)](https://www.pcisecuritystandards.org/)
@@ -12,7 +12,7 @@ Built specifically for high-throughput, latency-critical fintech environments (e
 
 ---
 
-## 📸 Architecture & Pipeline Overview
+## Architecture & Pipeline Overview
 
 ![PCI-DSS Hardening Architecture](docs/images/architecture.jpg)
 
@@ -29,7 +29,7 @@ Built specifically for high-throughput, latency-critical fintech environments (e
 
 ---
 
-## 📋 PCI-DSS v4.0 & CIS Benchmark Mapping Matrix
+## PCI-DSS v4.0 & CIS Benchmark Mapping Matrix
 
 | PCI-DSS v4.0 Control | CIS Benchmark | Target Area | Ansible Implementation / Role | Enforced Security State |
 |:---|:---|:---|:---|:---|
@@ -44,7 +44,7 @@ Built specifically for high-throughput, latency-critical fintech environments (e
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```bash
 ansible-linux-hardening-pci/
@@ -68,7 +68,7 @@ ansible-linux-hardening-pci/
 
 ---
 
-## 🚀 Quick Start Guide
+## Quick Start Guide
 
 ### 1. Prerequisites
 - **Ansible Core**: `>= 2.14`
@@ -153,7 +153,7 @@ ansible-playbook -i inventory/hosts.ini playbook.yml --check --diff
 
 ---
 
-## 🛡️ Key Role Deep Dives
+## Key Role Deep Dives
 
 ### `roles/ssh_hardening`
 - **FIPS/CIS Approved Ciphers**:
@@ -174,10 +174,5 @@ ansible-playbook -i inventory/hosts.ini playbook.yml --check --diff
 
 ---
 
-## 🤝 Contributing & Security Disclosures
-For questions, contributions, or security reports, please open an issue or pull request.
-
----
-
-## 📄 License
+## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
