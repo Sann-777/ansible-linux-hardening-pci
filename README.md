@@ -29,12 +29,6 @@ Built specifically for high-throughput, latency-critical fintech environments (e
 
 ---
 
-## 🖥️ Live Terminal Execution & Verification Demo
-
-![Ansible Terminal Execution Demo](docs/images/demo_terminal.jpg)
-
----
-
 ## 📋 PCI-DSS v4.0 & CIS Benchmark Mapping Matrix
 
 | PCI-DSS v4.0 Control | CIS Benchmark | Target Area | Ansible Implementation / Role | Enforced Security State |
