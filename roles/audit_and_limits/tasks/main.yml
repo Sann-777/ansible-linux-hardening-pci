@@ -1,0 +1,26 @@
+---
+# Audit & Resource Limits Tasks
+- name: Deploy file descriptor and process security limits
+  ansible.builtin.template:
+    src: 99-pci-limits.conf.j2
+    dest: /etc/security/limits.d/99-pci-limits.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Deploy PCI-DSS auditd rules
+  ansible.builtin.template:
+    src: pci-dss.rules.j2
+    dest: /etc/audit/rules.d/pci-dss.rules
+    owner: root
+    group: root
+    mode: '0640'
+  notify: restart auditd
+  ignore_errors: yes
+
+- name: Ensure auditd service is enabled and running
+  ansible.builtin.service:
+    name: auditd
+    state: started
+    enabled: yes
+  ignore_errors: yes

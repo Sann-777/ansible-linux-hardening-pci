@@ -1,0 +1,8 @@
+# ==============================================================================
+# Kernel & Network Hardening - PCI-DSS 2.2 & CIS Benchmark
+# Managed by Ansible - DO NOT EDIT MANUALLY
+# ==============================================================================
+
+{% for key, value in sysctl_settings.items() %}
+{{ key }} = {{ value }}
+{% endfor %}

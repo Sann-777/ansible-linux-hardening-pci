@@ -1,0 +1,14 @@
+# Ansible artifacts
+*.retry
+*.pyc
+__pycache__/
+.ansible/
+.vault_pass
+
+# OS & Environment
+.DS_Store
+*.swp
+*.bak
+.env
+*.pem
+*.key

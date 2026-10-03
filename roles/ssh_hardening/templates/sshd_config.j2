@@ -1,0 +1,54 @@
+# ==============================================================================
+# OpenSSH Daemon Configuration - PCI-DSS 2.2 & CIS Linux Benchmark Compliant
+# Managed by Ansible - DO NOT EDIT MANUALLY
+# ==============================================================================
+
+Port {{ sshd_port }}
+AddressFamily inet
+ListenAddress 0.0.0.0
+
+# Host Keys
+HostKey /etc/ssh/ssh_host_ed25519_key
+HostKey /etc/ssh/ssh_host_rsa_key
+
+# Cryptography Settings (Hardened Ciphers, MACs, KEX)
+Ciphers {{ sshd_ciphers }}
+MACs {{ sshd_macs }}
+KexAlgorithms {{ sshd_kex_algorithms }}
+
+# Authentication & Access Control
+LoginGraceTime 60
+PermitRootLogin {{ sshd_permit_root_login }}
+StrictModes yes
+MaxAuthTries {{ sshd_max_auth_tries }}
+MaxSessions 4
+
+# Key-based authentication only
+PubkeyAuthentication {{ sshd_pubkey_authentication }}
+PasswordAuthentication {{ sshd_password_authentication }}
+PermitEmptyPasswords {{ sshd_permit_empty_passwords }}
+KbdInteractiveAuthentication no
+UsePAM yes
+
+# Session & Forwarding Restrictions
+X11Forwarding {{ sshd_x11_forwarding }}
+AllowTcpForwarding {{ sshd_allow_tcp_forwarding }}
+AllowAgentForwarding no
+DisableForwarding yes
+
+# Inactivity Timeout (PCI-DSS 8.1.8 - Disconnect after 15 min idle)
+ClientAliveInterval {{ sshd_client_alive_interval }}
+ClientAliveCountMax {{ sshd_client_alive_count_max }}
+
+# Logging & Monitoring (PCI-DSS 10.2.2 - Verify all authentications)
+LogLevel {{ sshd_log_level }}
+SyslogFacility AUTH
+
+# Legal Warning Banner (PCI-DSS 2.2 / CIS 5.4.1)
+Banner {{ sshd_banner }}
+
+# Connection rate limiting against brute force
+MaxStartups {{ sshd_max_startups }}
+
+# Subsystem
+Subsystem sftp internal-sftp -f AUTHPRIV -l INFO

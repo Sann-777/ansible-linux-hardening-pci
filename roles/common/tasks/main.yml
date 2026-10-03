@@ -1,0 +1,49 @@
+---
+# Common baseline tasks
+- name: Update apt cache (Debian/Ubuntu)
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: ansible_os_family == "Debian"
+
+- name: Set system timezone to UTC
+  community.general.timezone:
+    name: "{{ common_timezone }}"
+  ignore_errors: yes
+
+- name: Install essential security and administration packages
+  ansible.builtin.package:
+    name: "{{ common_packages }}"
+    state: present
+  ignore_errors: yes
+
+- name: Deploy PCI-DSS compliant legal access banner (/etc/issue.net and /etc/motd)
+  ansible.builtin.template:
+    src: motd.j2
+    dest: "{{ item }}"
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - /etc/issue.net
+    - /etc/motd
+
+- name: Disable legacy and insecure services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  loop: "{{ disabled_legacy_services }}"
+  ignore_errors: yes
+
+- name: Configure automatic security updates (unattended-upgrades)
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+    owner: root
+    group: root
+    mode: '0644'
+  when: ansible_os_family == "Debian"
+  ignore_errors: yes

@@ -1,0 +1,8 @@
+---
+# Firewall configuration defaults (PCI-DSS 1.3 / CIS Benchmark)
+firewall_default_incoming_policy: "deny"
+firewall_default_outgoing_policy: "allow"
+firewall_ssh_port: 22
+firewall_ssh_rate_limit: true
+firewall_allowed_tcp_ports:
+  - 443  # HTTPS

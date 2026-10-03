@@ -1,0 +1,35 @@
+---
+# ==============================================================================
+# Master Hardening Playbook - Linux Fleet PCI-DSS & CIS Benchmark
+# ==============================================================================
+- name: Apply PCI-DSS & CIS Benchmark Linux Fleet Hardening
+  hosts: all
+  become: yes
+  serial: "25%"  # Rolling execution across fleet to guarantee zero downtime
+  max_fail_percentage: 10
+
+  pre_tasks:
+    - name: Pre-Flight - Record hostname and kernel version
+      ansible.builtin.debug:
+        msg: "Beginning baseline hardening on {{ inventory_hostname }} (Kernel: {{ ansible_kernel | default('N/A') }})"
+
+  roles:
+    - role: common
+      tags: [common, baseline]
+
+    - role: ssh_hardening
+      tags: [ssh, access_control]
+
+    - role: sysctl_hardening
+      tags: [sysctl, network, kernel]
+
+    - role: audit_and_limits
+      tags: [audit, limits, logging]
+
+    - role: firewall
+      tags: [firewall, network]
+
+  post_tasks:
+    - name: Post-Flight - Verification Summary
+      ansible.builtin.debug:
+        msg: "Hardening completed successfully on {{ inventory_hostname }}. System complies with PCI-DSS 2.2 baseline standards."

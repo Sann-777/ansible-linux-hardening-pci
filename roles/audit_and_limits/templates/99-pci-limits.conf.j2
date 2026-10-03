@@ -1,0 +1,18 @@
+# ==============================================================================
+# Process & File Descriptor Limits - PCI-DSS Anti-Resource Starvation
+# Managed by Ansible - DO NOT EDIT MANUALLY
+# ==============================================================================
+
+*               soft    nofile          {{ nofile_soft_limit }}
+*               hard    nofile          {{ nofile_hard_limit }}
+root            soft    nofile          {{ nofile_soft_limit }}
+root            hard    nofile          {{ nofile_hard_limit }}
+
+*               soft    nproc           {{ nproc_soft_limit }}
+*               hard    nproc           {{ nproc_hard_limit }}
+root            soft    nproc           {{ nproc_soft_limit }}
+root            hard    nproc           {{ nproc_hard_limit }}
+
+# Prevent core dumps containing sensitive credit card / memory data (PCI-DSS 3.4)
+*               hard    core            0
+root            hard    core            0

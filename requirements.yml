@@ -1,0 +1,13 @@
+---
+# Ansible Galaxy Collections Dependency Manifest
+# Install with: ansible-galaxy collection install -r requirements.yml
+
+collections:
+  - name: ansible.posix
+    version: ">=2.0.0"
+
+  - name: community.general
+    version: ">=9.0.0"
+
+  - name: amazon.aws
+    version: ">=8.0.0"

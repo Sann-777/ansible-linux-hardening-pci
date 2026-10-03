@@ -1,0 +1,48 @@
+# ==============================================================================
+# Auditd Rules - PCI-DSS Requirement 10 & CIS Linux Benchmark
+# Managed by Ansible - DO NOT EDIT MANUALLY
+# ==============================================================================
+
+# Delete all previous rules
+-D
+
+# Set buffer size
+-b {{ audit_backlog_limit }}
+
+# Failure flag: 1 = printk, 2 = panic
+-f {{ audit_failure_flag }}
+
+# 1. Audit user & group modifications (PCI-DSS 10.2.5)
+-w /etc/group -p wa -k identity
+-w /etc/passwd -p wa -k identity
+-w /etc/gshadow -p wa -k identity
+-w /etc/shadow -p wa -k identity
+-w /etc/security/opasswd -p wa -k identity
+
+# 2. Audit changes to system network environment
+-a always,exit -F arch=b64 -S sethostname -S setdomainname -k system-locale
+-w /etc/issue -p wa -k system-locale
+-w /etc/issue.net -p wa -k system-locale
+-w /etc/hosts -p wa -k system-locale
+-w /etc/network -p wa -k system-locale
+
+# 3. Audit login and logout events (PCI-DSS 10.2.4)
+-w /var/log/faillog -p wa -k logins
+-w /var/log/lastlog -p wa -k logins
+-w /var/log/tallylog -p wa -k logins
+-w /var/run/utmp -p wa -k session
+-w /var/log/wtmp -p wa -k session
+-w /var/log/btmp -p wa -k session
+
+# 4. Audit process privilege escalation & sudoers changes (PCI-DSS 10.2.2)
+-w /etc/sudoers -p wa -k actions
+-w /etc/sudoers.d/ -p wa -k actions
+
+# 5. Audit changes to SSH configuration
+-w /etc/ssh/sshd_config -p wa -k sshd_config
+
+# 6. Audit kernel module loading/unloading
+-a always,exit -F arch=b64 -S init_module -S delete_module -k modules
+
+# 7. Make audit configuration immutable until reboot (CIS 4.1.18)
+-e 2

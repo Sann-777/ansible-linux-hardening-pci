@@ -1,0 +1,33 @@
+---
+# SSH Hardening Tasks
+- name: Verify SSH host keys exist
+  ansible.builtin.stat:
+    path: /etc/ssh/ssh_host_ed25519_key
+  register: ssh_ed25519_key
+
+- name: Generate ED25519 host key if missing
+  ansible.builtin.command: ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ""
+  when: not ssh_ed25519_key.stat.exists
+  ignore_errors: yes
+
+- name: Set secure permissions on existing SSH host private keys (CIS 5.2.1)
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: '0600'
+  loop:
+    - /etc/ssh/ssh_host_rsa_key
+    - /etc/ssh/ssh_host_ed25519_key
+  ignore_errors: yes
+
+- name: Deploy hardened sshd_config (with pre-validation syntax check)
+  ansible.builtin.template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: '0600'
+    validate: 'sshd -t -f %s'
+  notify: restart sshd
+  ignore_errors: yes

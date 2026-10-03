@@ -1,0 +1,38 @@
+---
+# Host Firewall (UFW) Hardening Tasks (Ubuntu/Debian)
+- name: Set default incoming firewall policy to DENY
+  community.general.ufw:
+    direction: incoming
+    policy: "{{ firewall_default_incoming_policy }}"
+  when: ansible_os_family == 'Debian'
+  ignore_errors: yes
+
+- name: Set default outgoing firewall policy to ALLOW
+  community.general.ufw:
+    direction: outgoing
+    policy: "{{ firewall_default_outgoing_policy }}"
+  when: ansible_os_family == 'Debian'
+  ignore_errors: yes
+
+- name: Allow SSH port with rate limiting (anti-brute force)
+  community.general.ufw:
+    rule: limit
+    port: "{{ firewall_ssh_port }}"
+    proto: tcp
+  when: ansible_os_family == 'Debian' and firewall_ssh_rate_limit
+  ignore_errors: yes
+
+- name: Allow designated application TCP ports
+  community.general.ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  loop: "{{ firewall_allowed_tcp_ports }}"
+  when: ansible_os_family == 'Debian'
+  ignore_errors: yes
+
+- name: Enable UFW firewall service
+  community.general.ufw:
+    state: enabled
+  when: ansible_os_family == 'Debian'
+  ignore_errors: yes

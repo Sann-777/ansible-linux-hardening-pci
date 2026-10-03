@@ -1,0 +1,46 @@
+---
+# AWS EC2 Dynamic Inventory Plugin Configuration
+# Automatically groups AWS EC2 instances into inventory groups based on Tags, VPCs, and Regions.
+plugin: amazon.aws.aws_ec2
+
+regions:
+  - us-east-1
+  - ap-south-1
+
+# Filter only running instances
+filters:
+  instance-state-name:
+    - running
+
+# Hostname preference: use private IP address for VPC / VPN deployments
+hostnames:
+  - private-ip-address
+  - tag:Name
+
+# Construct dynamic inventory groups based on AWS Tags
+keyed_groups:
+  # Group by Environment tag (e.g., tag_Environment_production)
+  - prefix: env
+    key: tags.Environment
+
+  # Group by Role tag (e.g., role_payment_gateway)
+  - prefix: role
+    key: tags.Role
+
+  # Group by PCI Scope (e.g., pci_in_scope)
+  - prefix: pci
+    key: tags.PciScope
+
+  # Group by AWS Region
+  - prefix: region
+    key: placement.region
+
+# Explicit group definitions
+groups:
+  pci_scope: "'true' in (tags.PciScope | default('false') | lower)"
+  production: "'production' in (tags.Environment | default('') | lower)"
+  payment_gateways: "'payment-gateway' in (tags.Role | default('') | lower)"
+
+# Compose host variables
+compose:
+  ansible_host: private_ip_address

@@ -1,0 +1,10 @@
+---
+# Audit & Process limits configuration variables (PCI-DSS 10.2 & CIS Benchmark)
+nofile_soft_limit: 65535
+nofile_hard_limit: 65535
+nproc_soft_limit: 4096
+nproc_hard_limit: 4096
+
+# Buffer size for audit backlog (prevents dropping logs under heavy attack)
+audit_backlog_limit: 8192
+audit_failure_flag: 1  # 1 = log error message, 2 = kernel panic (for military/ultra-high security)

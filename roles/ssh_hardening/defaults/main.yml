@@ -1,0 +1,21 @@
+---
+# SSH Hardening Configuration Variables (CIS Benchmark & PCI-DSS 2.2 compliant)
+sshd_port: 22
+sshd_protocol: 2
+sshd_permit_root_login: "no"
+sshd_password_authentication: "no"
+sshd_pubkey_authentication: "yes"
+sshd_permit_empty_passwords: "no"
+sshd_max_auth_tries: 3
+sshd_client_alive_interval: 300     # 5 minutes
+sshd_client_alive_count_max: 2      # 10 minutes total idle timeout before disconnect
+sshd_x11_forwarding: "no"
+sshd_allow_tcp_forwarding: "no"
+sshd_max_startups: "10:30:100"
+sshd_log_level: "VERBOSE"
+sshd_banner: "/etc/issue.net"
+
+# Modern hardened ciphers, MACs, and Key Exchange algorithms
+sshd_ciphers: "chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"
+sshd_macs: "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256"
+sshd_kex_algorithms: "curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha256"

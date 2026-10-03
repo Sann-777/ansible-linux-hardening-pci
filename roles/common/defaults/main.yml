@@ -1,0 +1,26 @@
+---
+# Common role default variables
+common_timezone: "UTC"
+common_packages:
+  - curl
+  - wget
+  - vim
+  - git
+  - ufw
+  - iptables
+  - auditd
+  - audispd-plugins
+  - libpam-pwquality
+  - fail2ban
+  - unattended-upgrades
+  - logrotate
+
+# Services that must be disabled for PCI-DSS compliance (unnecessary legacy protocols)
+disabled_legacy_services:
+  - telnet
+  - rsh-server
+  - rsh-redone-server
+  - nis
+  - tftp
+  - xinetd
+  - avahi-daemon

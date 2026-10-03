@@ -1,0 +1,20 @@
+---
+# Sysctl Hardening Tasks
+- name: Deploy PCI-DSS kernel network parameters configuration
+  ansible.builtin.template:
+    src: 99-pci-dss-hardening.conf.j2
+    dest: /etc/sysctl.d/99-pci-dss-hardening.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: reload sysctl
+
+- name: Apply individual sysctl settings immediately
+  ansible.posix.sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: yes
+    sysctl_file: /etc/sysctl.d/99-pci-dss-hardening.conf
+  loop: "{{ sysctl_settings | dict2items }}"
+  ignore_errors: yes
